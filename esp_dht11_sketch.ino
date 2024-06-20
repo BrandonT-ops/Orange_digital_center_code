@@ -37,11 +37,11 @@ const float HUM_THRESHOLD = 50.0;
 float currentTemperature = 0.0;
 float currentHumidity = 0.0;
 
-// Unique identifier for each ESP32
+// Unique identifier for each ESP32 i guess?
 String deviceId;
 
 void setup() {
-  Serial.begin(115200);  // Start the serial communication at 115200 baud rate
+  Serial.begin(115200);  
   dht.begin(); 
 
   
@@ -121,7 +121,8 @@ void sendDataTask(void *parameter) {
       Serial.println(firebaseData.errorReason());
     }
 
-    vTaskDelay(2000 / portTICK_PERIOD_MS);  // Wait a few seconds between measurements
+    // Wait a few seconds between measurements
+    vTaskDelay(2000 / portTICK_PERIOD_MS);  
   }
 }
 
@@ -129,23 +130,25 @@ void sendDataTask(void *parameter) {
 void ledControlTask(void *parameter) {
   for (;;) {
     if (currentTemperature > TEMP_THRESHOLD) {
-      digitalWrite(LED_R1, HIGH);  // Turn on red LED
-      digitalWrite(LED_G1, LOW);   // Turn off green LED
-      digitalWrite(LED_B1, LOW);   // Turn off blue LED
+      // light up the red
+      digitalWrite(LED_R1, HIGH);  
+      digitalWrite(LED_G1, LOW);   
+      digitalWrite(LED_B1, LOW);   
     } else {
-      digitalWrite(LED_R1, LOW);   // Turn off red LED
-      digitalWrite(LED_G1, HIGH);  // Turn on green LED
-      digitalWrite(LED_B1, LOW);   // Turn off blue LED
+      // light up the green
+      digitalWrite(LED_R1, LOW);   
+      digitalWrite(LED_G1, HIGH);  
+      digitalWrite(LED_B1, LOW);   
     }
 
      if (currentHumidity > HUM_THRESHOLD) {
-      digitalWrite(LED_R2, HIGH);  // Turn on red LED
-      digitalWrite(LED_G2, LOW);   // Turn off green LED
-      digitalWrite(LED_B2, LOW);   // Turn off blue LED
+      digitalWrite(LED_R2, HIGH);  
+      digitalWrite(LED_G2, LOW);   
+      digitalWrite(LED_B2, LOW);   
     } else {
-      digitalWrite(LED_R2, LOW);   // Turn off red LED
-      digitalWrite(LED_G2, HIGH);  // Turn on green LED
-      digitalWrite(LED_B2, LOW);   // Turn off blue LED
+      digitalWrite(LED_R2, LOW);   
+      digitalWrite(LED_G2, HIGH);  
+      digitalWrite(LED_B2, LOW);   
     }
 
     vTaskDelay(1000 / portTICK_PERIOD_MS);  // Delay for a second
